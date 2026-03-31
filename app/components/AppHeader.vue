@@ -22,7 +22,7 @@ const links = [
           v-for="link in links"
           :key="link.to"
           :to="link.to"
-          class="text-sm font-medium hover:text-primary transition-colors"
+          class="text-sm font-medium "
           active-class="text-primary">
           {{ link.label }}
         </NuxtLink>
