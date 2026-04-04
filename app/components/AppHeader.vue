@@ -1,36 +1,22 @@
-<script setup lang="ts">
-const links = [
-  { label: 'Home', to: '/' },
-  { label: 'Product ', to: '/product' },
-  { label: 'ProductCard ', to: '/productcard' },
-]
-</script>
-
 <template>
-  <UMain>
-    <UHeader>
-      <!-- logo -->
-      <template #title>
-        <Logo class="font-bold text-3xl">
-          E-commerce
-        </Logo>
-      </template>
+  <header class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow border-b border-gray-200 dark:border-gray-800">
+    <UContainer class="flex items-center justify-between h-16">
+      <!-- Left: Logo / Title -->
+      <h1 class="text-3xl font-bold">
+        E-commerce
+      </h1>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-6">
-        <NuxtLink
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-          class="text-sm font-medium hover:text-primary transition-colors"
-          active-class="text-primary">
-          {{ link.label }}
-        </NuxtLink>
+      <!-- Center: Navigation links -->
+      <nav class="flex-1 flex justify-center gap-6">
+        <NuxtLink to="/">Home</NuxtLink>
+        <NuxtLink to="/products">Products</NuxtLink>
+        <NuxtLink to="/productCard">ProductCard</NuxtLink>
       </nav>
 
-      <template #right>
+      <!-- Right: Color Mode Button -->
+      <div>
         <UColorModeButton />
-      </template>
-    </UHeader>
-  </UMain>
+      </div>
+    </UContainer>
+  </header>
 </template>
