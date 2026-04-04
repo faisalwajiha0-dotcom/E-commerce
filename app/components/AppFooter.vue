@@ -42,8 +42,8 @@
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto mt-16 pt-8 border-t border-gray-800/60 text-center">
-      <p class="text-gray-500 text-sm tracking-wide">
+    <div class="max-w-7xl mx-auto mt-10 pt-6 border-t  border-gray-800/60 text-center">
+      <p class="text-gray-400 text-sm tracking-wide">
         © 2025 <span class="text-[#5e72e4] font-semibold tracking-wider">Smart Shop</span> | All Rights Reserved
       </p>
     </div>

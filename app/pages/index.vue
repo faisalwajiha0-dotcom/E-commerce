@@ -4,7 +4,7 @@
 <template>
   <div class="mt-6 px-4">
     <!-- 🔥 HERO SECTION -->
-    <section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20 px-6 text-center rounded-3xl">
+    <section class="bg-linear-to-r from-blue-600 to-purple-600 text-white py-20 px-6 text-center rounded-3xl">
       <h1 class="text-4xl md:text-5xl font-bold mb-4">
         Welcome to Smart Shop 🛍️
       </h1>
