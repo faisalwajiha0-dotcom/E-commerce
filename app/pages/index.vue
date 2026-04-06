@@ -18,7 +18,7 @@ const addToCart = product => {
         Welcome to Smart Shop 🛍️
       </h1>
 
-      <p class="text-lg mb-6">
+      <p class="text-lg mb-6 text-gray-300">
         Discover amazing products at the best prices
       </p>
 
