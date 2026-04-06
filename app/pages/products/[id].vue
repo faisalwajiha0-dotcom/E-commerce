@@ -2,6 +2,9 @@
 /* eslint-disable */
 import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useToast } from '#imports' // ✅ FIXED
+
+const toast = useToast()
 
 // Sample products array
 const products = [
@@ -22,7 +25,6 @@ const products = [
 const route = useRoute()
 const router = useRouter()
 
-// Get product id from URL
 const productId = Number(route.params.id)
 const product = ref(products.find(p => p.id === productId))
 
@@ -30,28 +32,28 @@ if (!product.value) {
     router.push('/products')
 }
 
-// SSR-safe cart
 const cart = ref([])
 onMounted(() => {
     const savedCart = localStorage.getItem('cart')
     if (savedCart) cart.value = JSON.parse(savedCart)
 })
 
-// Add to cart function
 const addToCart = prod => {
-    // Check if item already exists
     const existing = cart.value.find(i => i.id === prod.id)
     if (existing) {
         existing.quantity++
-    }
-    else {
+    } else {
         cart.value.push({ ...prod, quantity: 1 })
     }
     localStorage.setItem('cart', JSON.stringify(cart.value))
-    alert(`${prod.title} added to cart 🛒`)
+
+    toast.add({
+        title: 'Success',
+        description: `${prod.title} added to cart 🛒`,
+        color: 'success'
+    })
 }
 
-// Related products (same category, exclude current)
 const relatedProducts = computed(() => {
     return products.filter(p => p.category === product.value.category && p.id !== product.value.id)
 })
@@ -59,20 +61,16 @@ const relatedProducts = computed(() => {
 
 <template>
     <div class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Back Link -->
         <NuxtLink to="/products" class="inline-flex items-center text-blue-600 hover:text-blue-800 mb-6 font-medium">
             ← Back to Products
         </NuxtLink>
 
         <!-- Product Details -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <!-- Product Image -->
             <div>
-                <img :src="product.img" :alt="product.title" loading="lazy"
-                    class="rounded-xl shadow-lg w-full object-cover">
+                <img :src="product.img" :alt="product.title" class="rounded-xl shadow-lg w-full object-cover">
             </div>
 
-            <!-- Product Info -->
             <div class="space-y-4">
                 <h1 class="text-3xl md:text-4xl font-bold">
                     {{ product.title }}
@@ -84,38 +82,43 @@ const relatedProducts = computed(() => {
                     Category: {{ product.category }}
                 </p>
                 <p class="text-gray-600">
-                    {{ product.description || 'No description available.' }}
+                    {{ product.description }}
                 </p>
 
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition"
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg"
                     @click="addToCart(product)">
                     Add to Cart
                 </button>
             </div>
         </div>
 
-        <!-- Related Products -->
+        <!-- ✅ FIXED Related Products -->
         <div>
             <h2 class="text-2xl font-bold mb-6">
                 Related Products
             </h2>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <NuxtLink v-for="related in relatedProducts" :key="related.id" :to="`/products/${related.id}`">
-                    <div
-                        class="bg-[#0f172a] rounded-xl overflow-y-auto shadow-md hover:shadow-xl transition duration-300 group">
-                        <img :src="related.img"
-                            class="w-full h-48 object-cover rounded-t-xl transition duration-300 group-hover:scale-105">
-                        <div class="p-4 text-center">
-                            <h3 class="text-gray-300 font-semibold mb-2 group-hover:text-purple-400 transition">{{
-                                related.title }}</h3>
-                            <p class="text-blue-400 font-bold mb-3">${{ related.price }}</p>
-                            <NuxtLink :to="`/products/${related.id}`"
-                                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
-                                View Details
-                            </NuxtLink>
-                        </div>
+                <div v-for="related in relatedProducts" :key="related.id"
+                    class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
+
+                    <img :src="related.img"
+                        class="w-full h-48 object-cover rounded-t-xl transition duration-300 group-hover:scale-105">
+
+                    <div class="p-4 text-center">
+                        <h3 class="text-gray-300 font-semibold mb-2 group-hover:text-purple-400 transition">
+                            {{ related.title }}
+                        </h3>
+
+                        <p class="text-blue-400 font-bold mb-3">${{ related.price }}</p>
+
+                        <!-- ✅ SINGLE LINK -->
+                        <NuxtLink :to="`/products/${related.id}`"
+                            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+                            View Details
+                        </NuxtLink>
                     </div>
-                </NuxtLink>
+                </div>
             </div>
         </div>
     </div>
