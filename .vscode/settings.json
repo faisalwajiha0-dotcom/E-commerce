@@ -146,5 +146,8 @@
       "overviewRulerColor": "#4682B4",
       "isWholeLine": false
     }
-  ]
+  ],
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  }
 }

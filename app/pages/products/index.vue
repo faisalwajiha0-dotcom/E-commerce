@@ -71,6 +71,7 @@ const filteredProducts = computed(() => {
       <div
         v-for="product in filteredProducts"
         :key="product.id"
+        loading="lazy"
         class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
         <img :src="product.img" class="w-full h-48 object-cover rounded-t-xl transition duration-300 group-hover:scale-105">
 
