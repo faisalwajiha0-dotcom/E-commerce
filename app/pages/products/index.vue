@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const products = ref([
   { id: 1, title: 'Wireless Headphones', price: 99, category: 'Electronics', img: '/images/headphone.jpg' },
@@ -19,20 +19,13 @@ const products = ref([
 const searchQuery = ref('')
 const selectedCategory = ref('All')
 const sortOption = ref('default')
-
 const categories = ['All', 'Electronics', 'Clothing', 'Shoes', 'Accessories']
 
 const filteredProducts = computed(() => {
   let filtered = products.value
 
-  if (selectedCategory.value !== 'All') {
-    filtered = filtered.filter(p => p.category === selectedCategory.value)
-  }
-
-  if (searchQuery.value) {
-    filtered = filtered.filter(p => p.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
-  }
-
+  if (selectedCategory.value !== 'All') filtered = filtered.filter(p => p.category === selectedCategory.value)
+  if (searchQuery.value) filtered = filtered.filter(p => p.title.toLowerCase().includes(searchQuery.value.toLowerCase()))
   if (sortOption.value === 'low') filtered = filtered.sort((a, b) => a.price - b.price)
   if (sortOption.value === 'high') filtered = filtered.sort((a, b) => b.price - a.price)
 
@@ -41,8 +34,8 @@ const filteredProducts = computed(() => {
 </script>
 
 <template>
-  <div class="px-4 py-8 max-w-7xl mx-auto">
-    <h1 class="text-4xl font-bold mb-6 text-center bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+  <div class="px-4 py-10 max-w-7xl mx-auto">
+    <h1 class="text-5xl font-bold mt-0 mb-18 text-center bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
       Products
     </h1>
 
@@ -75,16 +68,27 @@ const filteredProducts = computed(() => {
 
     <!-- 🛍 Product Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <div v-for="product in filteredProducts" :key="product.id" class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
+      <div
+        v-for="product in filteredProducts"
+        :key="product.id"
+        class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
         <img :src="product.img" class="w-full h-48 object-cover rounded-t-xl transition duration-300 group-hover:scale-105">
+
         <div class="p-4 text-center">
           <h3 class="text-gray-300 font-semibold mb-2 group-hover:text-purple-400 transition">
             {{ product.title }}
           </h3>
+
           <p class="text-blue-400 font-bold mb-3">
             ${{ product.price }}
           </p>
-          <UButton label="Add to Cart" size="sm" color="primary" class="hover:scale-105 transition duration-300" />
+
+          <!-- 🔹 View Details Button -->
+          <NuxtLink
+            :to="`/products/${product.id}`"
+            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+            View Details
+          </NuxtLink>
         </div>
       </div>
     </div>
