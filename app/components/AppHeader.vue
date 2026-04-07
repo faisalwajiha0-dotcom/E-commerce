@@ -38,14 +38,14 @@ onMounted(() => {
 
       <!-- Center: Navigation links -->
       <nav class="flex-1 flex justify-center gap-6  ">
-        <NuxtLink class="bg-blue-400 bg-clip-text text-transparent hover:text-blue-600" to="/">Home</NuxtLink>
-        <NuxtLink class="bg-blue-400 bg-clip-text text-transparent hover:text-blue-600" to="/products">Products
+        <NuxtLink class="bg-blue-500 bg-clip-text text-transparent hover:text-blue-700" to="/">Home</NuxtLink>
+        <NuxtLink class="bg-blue-500 bg-clip-text text-transparent hover:text-blue-700" to="/products">Products
         </NuxtLink>
-        <NuxtLink class="bg-blue-400 bg-clip-text text-transparent hover:text-blue-600" to="/cart">Cart</NuxtLink>
-        <NuxtLink class="bg-blue-400 bg-clip-text text-transparent hover:text-blue-600" to="/checkout">Checkout
+        <NuxtLink class="bg-blue-500 bg-clip-text text-transparent hover:text-blue-700" to="/cart">Cart</NuxtLink>
+        <NuxtLink class="bg-blue-500 bg-clip-text text-transparent hover:text-blue-700" to="/checkout">Checkout
         </NuxtLink>
-        <NuxtLink class="bg-blue-400 bg-clip-text text-transparent hover:text-blue-600" to="/about">About</NuxtLink>
-        <NuxtLink class="bg-blue-400 bg-clip-text text-transparent hover:text-blue-600" to="/contact">Contact
+        <NuxtLink class="bg-blue-500 bg-clip-text text-transparent hover:text-blue-700" to="/about">About</NuxtLink>
+        <NuxtLink class="bg-blue-500 bg-clip-text text-transparent hover:text-blue-700" to="/contact">Contact
         </NuxtLink>
       </nav>
 

@@ -82,7 +82,7 @@ const placeOrder = () => {
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
 
       <!-- 📝 Form -->
-      <div class="md:col-span-7 bg-[#0f172a] p-6 rounded-xl shadow-md space-y-4">
+      <div class="md:col-span-7 p-6 rounded-xl shadow-md space-y-4">
 
         <h2 class="text-xl text-gray-300 font-bold mb-4 flex items-center gap-2">
 
