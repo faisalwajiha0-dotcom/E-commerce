@@ -39,8 +39,8 @@ const addToCart = productName => {
       <p class="text-lg mb-6 text-gray-300">
         Discover amazing products at the best prices
       </p>
-      <UButton label="Shop Now" size="lg" color="info" variant="solid" to="/products"
-        class="mt-6 hover:scale-105 transition duration-300" />
+      <UButton label="Shop Now" size="lg" to="/products"
+        class="mt-4 hover:scale-105 transition  bg-linear-to-r from-blue-500 to-purple-600 text-white duration-300" />
     </section>
 
     <!-- 1️⃣ Featured Categories -->
@@ -103,8 +103,8 @@ const addToCart = productName => {
             <p class="text-blue-400 font-bold mb-3">
               $99
             </p>
-            <UButton label="Add to Cart" size="sm" color="primary" variant="solid"
-              class="hover:scale-105 transition duration-300" @click="addToCart('Wireless Headphones')" />
+            <UButton label="Add to Cart" size="sm" class="hover:scale-105 transition  bg-blue-600
+              hover:bg-blue-700 text-white duration-300" @click="addToCart('Wireless Headphones')" />
           </div>
         </div>
 
@@ -119,7 +119,7 @@ const addToCart = productName => {
             <p class="text-blue-400 font-bold mb-3">
               $79
             </p>
-            <UButton label="Add to Cart" size="sm" color="primary" variant="solid"
+            <UButton label="Add to Cart" size="sm" class="bg-blue-600 hover:bg-blue-700 text-white"
               @click="addToCart('Stylish Jacket')" />
           </div>
         </div>
@@ -135,7 +135,7 @@ const addToCart = productName => {
             <p class="text-blue-400 font-bold mb-3">
               $120
             </p>
-            <UButton label="Add to Cart" size="sm" color="primary" variant="solid"
+            <UButton label="Add to Cart" size="sm" class="bg-blue-600 hover:bg-blue-700 text-white"
               @click="addToCart('Running Shoes')" />
           </div>
         </div>
@@ -151,7 +151,8 @@ const addToCart = productName => {
             <p class="text-blue-400 font-bold mb-3">
               $150
             </p>
-            <UButton label="Add to Cart" size="sm" color="primary" variant="solid" @click="addToCart('Luxury Watch')" />
+            <UButton label="Add to Cart" size="sm" class="bg-blue-600 hover:bg-blue-700 text-white"
+              @click="addToCart('Luxury Watch')" />
           </div>
         </div>
       </div>

@@ -82,10 +82,10 @@ const proceedToCheckout = () => {
 
     <!-- ✅ Empty Cart -->
     <div v-if="cart.length === 0" class="text-center text-gray-400 space-y-4">
-      <p class="text-lg text-gray-300">Your cart is empty </p>
+      <p class="text-lg text-blue-200">Your cart is empty </p>
 
       <NuxtLink to="/products"
-        class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg transition">
+        class="inline-block  bg-linear-to-r from-blue-500 to-purple-600 text-white px-5 py-2 rounded-lg transition">
         Shop Now
       </NuxtLink>
     </div>

@@ -14,7 +14,7 @@ const teamMembers = [
       <h1 class="text-5xl font-extrabold bg-clip-text text-transparent bg-blue-500 mb-4">
         About Us
       </h1>
-      <p class="text-blue-200 max-w-2xl mx-auto text-lg">
+      <p class="text-gray-600 dark:text-blue-200 max-w-2xl mx-auto text-lg">
         Smart Shop is your ultimate online destination for high-quality products.
         We combine style, simplicity, and a seamless shopping experience for everyone.
       </p>
@@ -37,7 +37,7 @@ const teamMembers = [
         </p>
       </div>
 
-      <img src="/images/our-mission.jpg" alt="Our Mission" class="rounded-xl shadow-lg mt-8">
+      <img src="/images/our-mission.jpg" alt="Our Mission" class="rounded-xl shadow-lg mt-6">
     </div>
 
     <!-- Team Section -->
@@ -75,16 +75,12 @@ const teamMembers = [
 
     <!-- Call to Action -->
     <div class="mt-16 text-center">
-      <h2 class="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">
+      <h2 class="text-3xl font-bold mb-4 text-blue-400">
         Join Our Journey
       </h2>
-      <p class="text-gray-600 dark:text-gray-300 mb-6">
+      <p class="text-blue-200">
         Explore our products and experience the Smart Shop difference!
       </p>
-      <button
-        class="px-6 py-3 bg-linear-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow hover:from-blue-600 hover:to-purple-700 transition">
-        Shop Now
-      </button>
     </div>
   </section>
 </template>
