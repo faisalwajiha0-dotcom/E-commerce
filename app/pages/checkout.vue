@@ -154,8 +154,12 @@ const placeOrder = () => {
           <span>${{ totalPrice }}</span>
         </div>
 
-        <button class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition"
+        <button
+          class="w-full mt-6 bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
           @click="placeOrder">
+
+          <UIcon name="i-lucide-check-circle" />
+
           Place Order
         </button>
 
