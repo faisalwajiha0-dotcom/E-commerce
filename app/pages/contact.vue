@@ -1,7 +1,8 @@
 <script setup>
 /* eslint-disable */
 import { ref } from 'vue'
-
+import { useToast } from '#imports'
+const toast = useToast()
 const formData = ref({
   name: '',
   email: '',
@@ -14,11 +15,18 @@ const handleSubmit = async () => {
   isSubmitting.value = true
   await new Promise(r => setTimeout(r, 1200))
 
-  alert('✅ Thank you! Your message has been sent.')
+  toast.add({
+    title: 'Message Successfully Sent!',
+    description: 'Thank you! Your message has been sent successfully.',
+    icon: 'i-heroicons-check-circle',
+    color: 'success'
+
+  })
 
   formData.value = { name: '', email: '', message: '' }
   isSubmitting.value = false
 }
+
 </script>
 
 <template>
@@ -28,11 +36,10 @@ const handleSubmit = async () => {
       <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-3xl p-10 shadow-xl">
         <!-- Heading -->
         <div class="text-center mb-12">
-          <h1
-            class="text-5xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent mb-3">
+          <h1 class="text-5xl font-extrabold bg-blue-500 bg-clip-text text-transparent mb-3">
             Contact Us
           </h1>
-          <p class="text-gray-500 dark:text-gray-300">
+          <p class="text-gray-500 dark:text-blue-200">
             Have questions? We'd love to hear from you!
           </p>
         </div>
@@ -48,17 +55,17 @@ const handleSubmit = async () => {
           <div>
 
             <input v-model="formData.email" type="email" placeholder="Enter your email"
-              class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
+              class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-800 dark:text-white focus:ring-1 focus:ring-blue-500 outline-none">
           </div>
 
           <div>
 
             <textarea v-model="formData.message" rows="4" placeholder="Write your message..."
-              class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-800 dark:text-white focus:ring-2 focus:ring-purple-500 outline-none" />
+              class="w-full p-3 rounded-xl border border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-800 dark:text-white focus:ring-1 focus:ring-blue-500 outline-none" />
           </div>
 
           <button type="submit" :disabled="isSubmitting"
-            class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-xl hover:opacity-90 transition">
+            class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:opacity-90 transition">
             {{ isSubmitting ? 'Sending...' : 'Send Message' }}
           </button>
         </form>
