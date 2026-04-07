@@ -74,12 +74,9 @@ const placeOrder = () => {
   <div class="max-w-7xl mx-auto px-4 py-12">
 
 
-    <h1 class="text-4xl font-bold text-center mb-10 flex items-center justify-center gap-3">
-      <span class="bg-blue-500 bg-clip-text text-transparent">Checkout</span>
-      <UIcon name="i-lucide-credit-card" class="text-4xl text-blue-500" />
-
-
-
+    <h1 class="font-bold text-center mb-10 flex items-center justify-center gap-3">
+      <span class="bg-blue-500 text-5xl bg-clip-text text-transparent">Checkout</span>
+      <UIcon name="i-lucide-credit-card" class="text-5xl text-blue-500" />
     </h1>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
