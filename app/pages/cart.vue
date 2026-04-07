@@ -72,8 +72,12 @@ const proceedToCheckout = () => {
 <template>
   <div class="max-w-7xl mx-auto px-4 py-12">
 
-    <h1 class="text-5xl font-bold mb-4 text-center bg-blue-500 bg-clip-text text-transparent">
-      Your Cart 🛒
+    <h1 class="text-5xl font-bold mb-4 text-center flex items-center justify-center gap-3">
+      <span class="bg-blue-500 bg-clip-text text-transparent">
+        Your Cart
+      </span>
+      <UIcon name="i-lucide-shopping-cart" class="text-5xl text-blue-500" />
+
     </h1>
 
     <!-- ✅ Empty Cart -->

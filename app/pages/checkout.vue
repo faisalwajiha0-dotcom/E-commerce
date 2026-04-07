@@ -74,8 +74,12 @@ const placeOrder = () => {
   <div class="max-w-7xl mx-auto px-4 py-12">
 
 
-    <h1 class="text-4xl font-bold text-center bg-blue-500 bg-clip-text text-transparent mb-10">
-      Checkout 🧾
+    <h1 class="text-4xl font-bold text-center mb-10 flex items-center justify-center gap-3">
+      <span class="bg-blue-500 bg-clip-text text-transparent">Checkout</span>
+      <UIcon name="i-lucide-credit-card" class="text-4xl text-blue-500" />
+
+
+
     </h1>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
@@ -83,32 +87,59 @@ const placeOrder = () => {
       <!-- 📝 Form -->
       <div class="md:col-span-7 bg-[#0f172a] p-6 rounded-xl shadow-md space-y-4">
 
-        <h2 class="text-xl text-gray-300 font-bold mb-4">
+        <h2 class="text-xl text-gray-300 font-bold mb-4 flex items-center gap-2">
+
+          <UIcon name="i-lucide-user" />
+
           Billing Details
+
         </h2>
+        <!-- Name -->
+        <div class="flex items-center bg-gray-800 rounded-lg px-3">
+          <UIcon name="i-lucide-user" class="text-gray-400 mr-2" />
+          <input v-model="form.name" type="text" placeholder="Full Name"
+            class="w-full py-2 bg-transparent text-white outline-none">
+        </div>
 
-        <input v-model="form.name" type="text" placeholder="Full Name"
-          class="w-full px-4 py-2 rounded-lg bg-gray-800 text-white outline-none">
+        <!-- Email -->
+        <div class="flex items-center bg-gray-800 rounded-lg px-3">
+          <UIcon name="i-lucide-mail" class="text-gray-400 mr-2" />
+          <input v-model="form.email" type="email" placeholder="Email"
+            class="w-full py-2 bg-transparent text-white outline-none">
+        </div>
 
-        <input v-model="form.email" type="email" placeholder="Email"
-          class="w-full px-4 py-2 rounded-lg bg-gray-800 text-white outline-none">
+        <!-- Phone -->
+        <div class="flex items-center bg-gray-800 rounded-lg px-3">
+          <UIcon name="i-lucide-phone" class="text-gray-400 mr-2" />
+          <input v-model="form.phone" type="text" placeholder="Phone Number"
+            class="w-full py-2 bg-transparent text-white outline-none">
+        </div>
 
-        <input v-model="form.phone" type="text" placeholder="Phone Number"
-          class="w-full px-4 py-2 rounded-lg bg-gray-800 text-white outline-none">
+        <!-- City -->
+        <div class="flex items-center bg-gray-800 rounded-lg px-3">
+          <UIcon name="i-lucide-map-pin" class="text-gray-400 mr-2" />
+          <input v-model="form.city" type="text" placeholder="City"
+            class="w-full py-2 bg-transparent text-white outline-none">
+        </div>
 
-        <input v-model="form.city" type="text" placeholder="City"
-          class="w-full px-4 py-2 rounded-lg bg-gray-800 text-white outline-none">
-
-        <textarea v-model="form.address" placeholder="Address"
-          class="w-full px-4 py-2 rounded-lg bg-gray-800 text-white outline-none" />
+        <!-- Address -->
+        <div class="flex items-start bg-gray-800 rounded-lg px-3 py-2">
+          <UIcon name="i-lucide-home" class="text-gray-400 mr-2 mt-1" />
+          <textarea v-model="form.address" placeholder="Address"
+            class="w-full bg-transparent text-white outline-none resize-none"></textarea>
+        </div>
 
       </div>
 
       <!-- 💳 Order Summary -->
       <div class="md:col-span-5 bg-[#1f2937] p-6 rounded-xl shadow-md h-fit mt-8 md:mt-18">
 
-        <h2 class="text-xl text-gray-300 font-bold mb-4">
+        <h2 class="text-xl text-gray-300 font-bold mb-4 flex items-center gap-2">
+
+          <UIcon name="i-lucide-shopping-bag" class="text-gray-300" />
+
           Order Summary
+
         </h2>
 
         <div v-for="item in cart" :key="item.id" class="flex justify-between text-gray-300 mb-2">
