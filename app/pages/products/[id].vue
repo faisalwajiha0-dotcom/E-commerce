@@ -75,13 +75,13 @@ const relatedProducts = computed(() => {
                 <h1 class="text-3xl md:text-4xl font-bold">
                     {{ product.title }}
                 </h1>
-                <p class="text-xl text-gray-700 font-semibold">
+                <p class="text-xl text-gray-500 font-semibold">
                     ${{ product.price }}
                 </p>
-                <p class="text-gray-600">
+                <p class="text-gray-400">
                     Category: {{ product.category }}
                 </p>
-                <p class="text-gray-600">
+                <p class="text-gray-400">
                     {{ product.description }}
                 </p>
 

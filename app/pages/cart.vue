@@ -1,10 +1,14 @@
 <script setup>
 /* eslint-disable */
 import { ref, computed, onMounted } from 'vue'
+import { useToast } from '#imports'
 
-// SSR-safe cart
+const toast = useToast()
+
+// Cart state
 const cart = ref([])
 
+// Load cart from localStorage
 onMounted(() => {
   const savedCart = localStorage.getItem('cart')
   if (savedCart) {
@@ -12,17 +16,24 @@ onMounted(() => {
   }
 })
 
-// Total price calculate
+// Total price
 const totalPrice = computed(() => {
-  return cart.value.reduce((sum, item) => {
-    return sum + (Number(item.price) || 0) * (item.quantity || 1)
-  }, 0)
+  return cart.value
+    .reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    .toFixed(2)
 })
 
 // Remove item
 const removeItem = index => {
+  const removed = cart.value[index]
   cart.value.splice(index, 1)
   localStorage.setItem('cart', JSON.stringify(cart.value))
+
+  toast.add({
+    title: 'Removed',
+    description: `${removed.title} removed ❌`,
+    color: 'error'
+  })
 }
 
 // Increase quantity
@@ -39,61 +50,90 @@ const decreaseQty = index => {
   }
 }
 
-// Proceed to checkout
+// Checkout
 const proceedToCheckout = () => {
   if (cart.value.length === 0) {
-    alert('Your cart is empty!')
+    toast.add({
+      title: 'Cart Empty',
+      description: 'Please add items before checkout 🛒',
+      color: 'error'
+    })
     return
   }
-  alert('Proceeding to checkout... (integration pending)')
+
+  toast.add({
+    title: 'Coming Soon',
+    description: 'Checkout feature coming soon 🚀',
+    color: 'success'
+  })
 }
 </script>
 
 <template>
   <div class="max-w-7xl mx-auto px-4 py-12">
-    <h1 class="text-4xl font-bold mb-8 text-center">
+
+    <h1 class="text-5xl font-bold mb-4 text-center bg-blue-500 bg-clip-text text-transparent">
       Your Cart 🛒
     </h1>
 
-    <div v-if="cart.length === 0" class="text-center text-gray-400">
-      Your cart is empty.
-      <NuxtLink to="/products" class="text-blue-500 underline ml-2">Shop Now</NuxtLink>
+    <!-- ✅ Empty Cart -->
+    <div v-if="cart.length === 0" class="text-center text-gray-400 space-y-4">
+      <p class="text-lg text-gray-300">Your cart is empty </p>
+
+      <NuxtLink to="/products"
+        class="inline-block bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg transition">
+        Shop Now
+      </NuxtLink>
     </div>
 
+    <!-- ✅ Cart Content -->
     <div v-else class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
       <!-- Cart Items -->
       <div class="md:col-span-8 space-y-4">
         <div v-for="(item, index) in cart" :key="index" class="flex items-center bg-[#0f172a] p-4 rounded-xl shadow-md">
+
           <img :src="item.img || '/images/placeholder.png'" :alt="item.title"
-            class="w-24 h-24 object-cover rounded-xl mr-4">
+            class="w-24 h-24 object-cover rounded-xl mr-4 transition duration-300 hover:scale-105">
 
           <div class="flex-1">
             <h2 class="text-gray-300 font-semibold text-lg">
               {{ item.title }}
             </h2>
+
             <p class="text-blue-400 font-bold mt-1">
               ${{ item.price }}
             </p>
 
-            <div class="flex items-center mt-2 space-x-2">
-              <button class="px-2 py-1 bg-gray-700 text-white rounded" @click="decreaseQty(index)">
+            <!-- Quantity -->
+            <div class="flex items-center mt-3 space-x-2">
+
+              <button :disabled="item.quantity === 1"
+                class="px-2 py-1 bg-gray-700 text-white rounded disabled:opacity-50" @click="decreaseQty(index)">
                 -
               </button>
-              <span class="text-gray-300">{{ item.quantity }}</span>
+
+              <span class="text-gray-300 font-semibold">
+                {{ item.quantity }}
+              </span>
+
               <button class="px-2 py-1 bg-gray-700 text-white rounded" @click="increaseQty(index)">
                 +
               </button>
+
             </div>
           </div>
 
-          <button class="text-red-500 ml-4 font-bold" @click="removeItem(index)">
+          <!-- Remove -->
+          <button class="text-red-500 ml-4 font-bold hover:underline" @click="removeItem(index)">
             Remove
           </button>
         </div>
       </div>
 
       <!-- Cart Summary -->
-      <div class="md:col-span-4 bg-[#1f2937] p-6 rounded-xl shadow-md h-fit">
+      <div class="md:col-span-4 bg-[#1f2937] p-6 rounded-xl shadow-md h-fit mt-14">
+
         <h2 class="text-gray-300 text-xl font-bold mb-4">
           Order Summary
         </h2>
@@ -105,10 +145,12 @@ const proceedToCheckout = () => {
 
         <div class="flex justify-between text-gray-300 mb-4">
           <span>Total:</span>
-          <span class="font-bold text-blue-400">${{ totalPrice }}</span>
+          <span class="font-bold text-blue-400">
+            ${{ totalPrice }}
+          </span>
         </div>
 
-        <button class="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition"
+        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded transition"
           @click="proceedToCheckout">
           Proceed to Checkout
         </button>
@@ -116,6 +158,7 @@ const proceedToCheckout = () => {
         <NuxtLink to="/products" class="block mt-4 text-center text-blue-400 underline">
           Continue Shopping
         </NuxtLink>
+
       </div>
     </div>
   </div>

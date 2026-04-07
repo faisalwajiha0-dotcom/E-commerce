@@ -46,7 +46,7 @@ const addToCart = productName => {
     <!-- 1️⃣ Featured Categories -->
     <section class="mb-14">
       <h2
-        class="text-3xl font-bold text-center mb-8 mt-6 bg-linear-to-r from-blue-600 to-pink-500 bg-clip-text text-transparent">
+        class="text-3xl font-bold text-center mb-8 mt-6 bg-linear-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent">
         Shop by Category
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
