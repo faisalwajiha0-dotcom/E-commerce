@@ -26,7 +26,7 @@ const teamMembers = [
         <h2 class="text-4xl font-bold mb-4 text-blue-500">
           Our Mission
         </h2>
-        <p class="text-blue-200 text-lg">
+        <p class="text-gray-600 dark:text-blue-200 text-lg">
           Our mission is to provide our customers with high-quality products at the best possible prices,
           combined with exceptional customer service and a seamless shopping experience. We aim to make
           online shopping simple, reliable, and enjoyable for everyone.
@@ -78,7 +78,7 @@ const teamMembers = [
       <h2 class="text-3xl font-bold mb-4 text-blue-400">
         Join Our Journey
       </h2>
-      <p class="text-blue-200">
+      <p class="text-gray-600 dark:text-blue-200">
         Explore our products and experience the Smart Shop difference!
       </p>
     </div>
