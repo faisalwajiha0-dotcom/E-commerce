@@ -1,31 +1,43 @@
 <script setup>
 /* eslint-disable */
 import { ref, onMounted } from 'vue'
+import { useToast } from '#imports'
+
+const toast = useToast()
+
+// ✅ Products array (image + price included)
+const products = [
+  { title: 'Wireless Headphones', price: 99, img: '/images/headphone.jpg' },
+  { title: 'Stylish Jacket', price: 79, img: '/images/jacket.jpg' },
+  { title: 'Running Shoes', price: 120, img: '/images/shoe.jpg' },
+  { title: 'Luxury Watch', price: 150, img: '/images/watch.jpg' }
+]
 
 const cart = ref([])
 
-// Load cart from localStorage only on client
 onMounted(() => {
   if (localStorage.getItem('cart')) {
     cart.value = JSON.parse(localStorage.getItem('cart'))
   }
 })
 
-const addToCart = productName => {
-  const existing = cart.value.find(item => item.name === productName)
+// ✅ Updated function (full product save + toast)
+const addToCart = (product) => {
+  const existing = cart.value.find(item => item.title === product.title)
+
   if (existing) {
     existing.quantity++
-  }
-  else {
-    cart.value.push({ name: productName, quantity: 1 })
-  }
-
-  // Save to localStorage only in client
-  if (import.meta.client) {
-    localStorage.setItem('cart', JSON.stringify(cart.value))
+  } else {
+    cart.value.push({ ...product, quantity: 1 })
   }
 
-  alert(productName + ' added to cart 🛒')
+  localStorage.setItem('cart', JSON.stringify(cart.value))
+
+  toast.add({
+    title: 'Added to Cart',
+    description: `${product.title} added successfully 🛒`,
+    color: 'success'
+  })
 }
 </script>
 
@@ -92,69 +104,27 @@ const addToCart = productName => {
       </h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        <!-- Product 1 -->
-        <div class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
-          <img src="/images/headphone.jpg" alt="Wireless Headphones" loading="lazy"
+
+        <div v-for="product in products" :key="product.title"
+          class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
+          <img :src="product.img" :alt="product.title" loading="lazy"
             class="w-full h-48 object-cover rounded-xl transition duration-300 group-hover:scale-110">
+
           <div class="text-center p-4">
             <h3 class="font-semibold mb-2 text-gray-300 group-hover:text-purple-400 transition">
-              Wireless Headphones
+              {{ product.title }}
             </h3>
+
             <p class="text-blue-400 font-bold mb-3">
-              $99
+              ${{ product.price }}
             </p>
-            <UButton label="Add to Cart" size="sm" class="hover:scale-105 transition  bg-blue-600
-              hover:bg-blue-700 text-white duration-300" @click="addToCart('Wireless Headphones')" />
+
+            <UButton label="Add to Cart" size="sm"
+              class="hover:scale-105 transition bg-blue-600 hover:bg-blue-700 text-white duration-300"
+              @click="addToCart(product)" />
           </div>
         </div>
 
-        <!-- Product 2 -->
-        <div class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
-          <img src="/images/jacket.jpg" alt="Stylish Jacket" loading="lazy"
-            class="w-full h-48 object-cover rounded-xl transition duration-300 group-hover:scale-110">
-          <div class="p-4 text-center">
-            <h3 class="text-gray-300 group-hover:text-purple-400 transition font-semibold mb-2">
-              Stylish Jacket
-            </h3>
-            <p class="text-blue-400 font-bold mb-3">
-              $79
-            </p>
-            <UButton label="Add to Cart" size="sm" class="bg-blue-600 hover:bg-blue-700 text-white"
-              @click="addToCart('Stylish Jacket')" />
-          </div>
-        </div>
-
-        <!-- Product 3 -->
-        <div class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
-          <img src="/images/shoe.jpg" alt="Running Shoes" loading="lazy"
-            class="w-full h-48 object-cover rounded-xl transition duration-300 group-hover:scale-110">
-          <div class="p-4 text-center">
-            <h3 class="text-gray-300 group-hover:text-purple-400 transition font-semibold mb-2">
-              Running Shoes
-            </h3>
-            <p class="text-blue-400 font-bold mb-3">
-              $120
-            </p>
-            <UButton label="Add to Cart" size="sm" class="bg-blue-600 hover:bg-blue-700 text-white"
-              @click="addToCart('Running Shoes')" />
-          </div>
-        </div>
-
-        <!-- Product 4 -->
-        <div class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
-          <img src="/images/watch.jpg" alt="Luxury Watch" loading="lazy"
-            class="w-full h-48 object-cover rounded-xl transition duration-300 group-hover:scale-110">
-          <div class="p-4 text-center">
-            <h3 class="text-gray-300 group-hover:text-purple-400 transition font-semibold mb-2">
-              Luxury Watch
-            </h3>
-            <p class="text-blue-400 font-bold mb-3">
-              $150
-            </p>
-            <UButton label="Add to Cart" size="sm" class="bg-blue-600 hover:bg-blue-700 text-white"
-              @click="addToCart('Luxury Watch')" />
-          </div>
-        </div>
       </div>
     </section>
   </div>

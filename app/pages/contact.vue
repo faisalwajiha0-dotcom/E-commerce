@@ -65,7 +65,7 @@ const handleSubmit = async () => {
           </div>
 
           <button type="submit" :disabled="isSubmitting"
-            class="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:opacity-90 transition">
+            class="w-full py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:opacity-90 transition">
             {{ isSubmitting ? 'Sending...' : 'Send Message' }}
           </button>
         </form>
