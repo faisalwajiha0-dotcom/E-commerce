@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { ref, computed } from 'vue'
 
-// 🔥 products now coming from API
+// 🔥 products from API
 const { data: products } = await useFetch('/api/products')
 
 const searchQuery = ref('')
@@ -14,19 +14,23 @@ const categories = ['All', 'Electronics', 'Clothing', 'Shoes', 'Accessories']
 const filteredProducts = computed(() => {
   let filtered = products.value || []
 
-  if (selectedCategory.value !== 'All')
+  if (selectedCategory.value !== 'All') {
     filtered = filtered.filter(p => p.category === selectedCategory.value)
+  }
 
-  if (searchQuery.value)
+  if (searchQuery.value) {
     filtered = filtered.filter(p =>
       p.title.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
+  }
 
-  if (sortOption.value === 'low')
-    filtered = filtered.sort((a, b) => a.price - b.price)
+  if (sortOption.value === 'low') {
+    filtered = [...filtered].sort((a, b) => a.price - b.price)
+  }
 
-  if (sortOption.value === 'high')
-    filtered = filtered.sort((a, b) => b.price - a.price)
+  if (sortOption.value === 'high') {
+    filtered = [...filtered].sort((a, b) => b.price - a.price)
+  }
 
   return filtered
 })
@@ -34,43 +38,41 @@ const filteredProducts = computed(() => {
 
 <template>
   <div class="px-4 py-10 max-w-7xl mx-auto">
-    <h1 class="text-5xl font-bold mt-0 mb-18 text-center bg-blue-500 bg-clip-text text-transparent">
+
+    <h1 class="text-5xl font-bold mb-10 text-center bg-blue-500 bg-clip-text text-transparent">
       Products
     </h1>
 
-    <!-- 🔍 Search + Filters -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <!-- Filters -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-8">
       <input v-model="searchQuery" type="text" placeholder="Search products..."
-        class="w-full sm:w-1/3 px-4 py-2 rounded-xl border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        class="w-full sm:w-1/3 px-4 py-2 rounded-xl border">
 
-      <select v-model="selectedCategory" class="px-4 py-2 rounded-xl border border-gray-600">
-        <option v-for="cat in categories" :key="cat" :value="cat">
+      <select v-model="selectedCategory" class="px-4 py-2 rounded-xl border">
+        <option v-for="cat in categories" :key="cat">
           {{ cat }}
         </option>
       </select>
 
-      <select v-model="sortOption" class="px-4 py-2 rounded-xl border border-gray-600">
-        <option value="default">
-          Sort By
-        </option>
-        <option value="low">
-          Price: Low to High
-        </option>
-        <option value="high">
-          Price: High to Low
-        </option>
+      <select v-model="sortOption" class="px-4 py-2 rounded-xl border">
+        <option value="default">Sort By</option>
+        <option value="low">Low to High</option>
+        <option value="high">High to Low</option>
       </select>
     </div>
 
-    <!-- 🛍 Product Grid -->
+    <!-- Products Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <div v-for="product in filteredProducts" :key="product.id" loading="lazy"
-        class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
-        <img :src="product.img"
-          class="w-full h-48 object-cover rounded-t-xl transition duration-300 group-hover:scale-105">
+
+      <div v-for="product in filteredProducts" :key="product.id"
+        class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md">
+
+        <!-- 🔥 FIX: image -->
+        <img :src="product.image || '/images/placeholder.png'" class="w-full h-48 object-cover" />
 
         <div class="p-4 text-center">
-          <h3 class="text-gray-300 font-semibold mb-2 group-hover:text-purple-400 transition">
+
+          <h3 class="text-gray-300 font-semibold mb-2">
             {{ product.title }}
           </h3>
 
@@ -78,13 +80,13 @@ const filteredProducts = computed(() => {
             ${{ product.price }}
           </p>
 
-          <!-- 🔹 View Details Button -->
-          <NuxtLink :to="`/products/${product.id}`"
-            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">
+          <NuxtLink :to="`/products/${product.id}`" class="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg">
             View Details
           </NuxtLink>
+
         </div>
       </div>
+
     </div>
   </div>
 </template>

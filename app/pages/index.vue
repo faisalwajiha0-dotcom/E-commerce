@@ -1,41 +1,42 @@
 <script setup>
 /* eslint-disable */
-import { ref, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useToast } from '#imports'
 
 const toast = useToast()
 
-// ✅ Products array (image + price included)
-const products = [
-  { title: 'Wireless Headphones', price: 99, img: '/images/headphone.jpg' },
-  { title: 'Stylish Jacket', price: 79, img: '/images/jacket.jpg' },
-  { title: 'Running Shoes', price: 120, img: '/images/shoe.jpg' },
-  { title: 'Luxury Watch', price: 150, img: '/images/watch.jpg' }
-]
+// 🔥 PRODUCTS FROM DATABASE
+const { data: products } = await useFetch('/api/products')
 
+// Cart (still localStorage for now)
 const cart = ref([])
 
-onMounted(() => {
-  if (localStorage.getItem('cart')) {
-    cart.value = JSON.parse(localStorage.getItem('cart'))
-  }
-})
+if (process.client) {
+  const saved = localStorage.getItem('cart')
+  if (saved) cart.value = JSON.parse(saved)
+}
 
-// ✅ Updated function (full product save + toast)
+// Add to cart
 const addToCart = (product) => {
-  const existing = cart.value.find(item => item.title === product.title)
+  const existing = cart.value.find(item => item.productId === product.id)
 
   if (existing) {
     existing.quantity++
   } else {
-    cart.value.push({ ...product, quantity: 1 })
+    cart.value.push({
+      productId: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+      quantity: 1
+    })
   }
 
   localStorage.setItem('cart', JSON.stringify(cart.value))
 
   toast.add({
     title: 'Added to Cart',
-    description: `${product.title} added successfully 🛒`,
+    description: `${product.title} added 🛒`,
     color: 'success'
   })
 }
@@ -105,23 +106,24 @@ const addToCart = (product) => {
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
 
-        <div v-for="product in products" :key="product.title"
-          class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 group">
-          <img :src="product.img" :alt="product.title" loading="lazy"
-            class="w-full h-48 object-cover rounded-xl transition duration-300 group-hover:scale-110">
+        <div v-for="product in products || []" :key="product.id"
+          class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md group">
+
+          <img :src="product.image || '/images/placeholder.png'"
+            class="w-full h-48 object-cover group-hover:scale-110 transition" />
 
           <div class="text-center p-4">
-            <h3 class="font-semibold mb-2 text-gray-300 group-hover:text-purple-400 transition">
+
+            <h3 class="font-semibold text-gray-300">
               {{ product.title }}
             </h3>
 
-            <p class="text-blue-400 font-bold mb-3">
+            <p class="text-blue-400 font-bold">
               ${{ product.price }}
             </p>
 
-            <UButton label="Add to Cart" size="sm"
-              class="hover:scale-105 transition bg-blue-600 hover:bg-blue-700 text-white duration-300"
-              @click="addToCart(product)" />
+            <UButton label="Add to Cart" size="sm" class="bg-blue-600 text-white mt-2" @click="addToCart(product)" />
+
           </div>
         </div>
 
