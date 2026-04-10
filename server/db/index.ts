@@ -1,8 +1,6 @@
 // server/db/index.ts
-import { drizzle } from 'drizzle-orm/better-sqlite3'
-import Database from 'better-sqlite3'
+import { drizzle } from 'drizzle-orm/d1'
 import * as schema from './schema'
 
-const sqlite = new Database('database.sqlite')
-
-export const db = drizzle(sqlite, { schema })
+// hubDatabase() خود بخود NuxtHub کے SQLite/D1 ڈیٹا بیس کو کنیکٹ کر دے گا
+export const db = drizzle(hubDatabase(), { schema })

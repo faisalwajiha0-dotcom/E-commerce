@@ -5,17 +5,30 @@ import { ref, computed } from 'vue'
 // 🔥 Fetch products from API
 const { data, pending, error } = await useFetch('/api/products')
 
-// Ensure products is always an array
-const products = computed(() => data.value || [])
+// ✅ Ensure products is always an array
+const products = computed(() => {
+  if (Array.isArray(data.value)) {
+    return data.value
+  }
+  // If API returns { data: [...] }
+  if (data.value && Array.isArray(data.value.data)) {
+    return data.value.data
+  }
+  return []
+})
 
 // 🔍 Filters
 const searchQuery = ref('')
 const selectedCategory = ref('All')
 const sortOption = ref('default')
 
-// 📂 Dynamic categories from database
+// 📂 Dynamic categories from products
 const categories = computed(() => {
-  const unique = new Set(products.value.map(p => p.category).filter(Boolean))
+  const unique = new Set(
+    products.value
+      .map((p) => p.category)
+      .filter(Boolean)
+  )
   return ['All', ...unique]
 })
 
@@ -26,13 +39,13 @@ const filteredProducts = computed(() => {
   // Filter by category
   if (selectedCategory.value !== 'All') {
     filtered = filtered.filter(
-      p => p.category === selectedCategory.value
+      (p) => p.category === selectedCategory.value
     )
   }
 
   // Search by title
   if (searchQuery.value) {
-    filtered = filtered.filter(p =>
+    filtered = filtered.filter((p) =>
       p.title?.toLowerCase().includes(
         searchQuery.value.toLowerCase()
       )
@@ -41,9 +54,9 @@ const filteredProducts = computed(() => {
 
   // Sorting
   if (sortOption.value === 'low') {
-    filtered.sort((a, b) => a.price - b.price)
+    filtered.sort((a, b) => Number(a.price) - Number(b.price))
   } else if (sortOption.value === 'high') {
-    filtered.sort((a, b) => b.price - a.price)
+    filtered.sort((a, b) => Number(b.price) - Number(a.price))
   }
 
   return filtered
