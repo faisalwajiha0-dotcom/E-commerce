@@ -5,15 +5,19 @@ import { useToast } from '#imports'
 
 const toast = useToast()
 
-// Cart state
 const cart = ref([])
 
-// Load cart from localStorage
+// 🔥 Load from DB API
+const loadCart = async () => {
+  const data = await $fetch('/api/cart')
+  cart.value = data.map(item => ({
+    ...item,
+    quantity: item.quantity || 1
+  }))
+}
+
 onMounted(() => {
-  const savedCart = localStorage.getItem('cart')
-  if (savedCart) {
-    cart.value = JSON.parse(savedCart)
-  }
+  loadCart()
 })
 
 // Total price
@@ -23,30 +27,33 @@ const totalPrice = computed(() => {
     .toFixed(2)
 })
 
-// Remove item
-const removeItem = index => {
-  const removed = cart.value[index]
+// Remove item (DB se delete)
+const removeItem = async (index) => {
+  const item = cart.value[index]
+
+  await $fetch('/api/cart', {
+    method: 'DELETE',
+    body: { id: item.id }
+  })
+
   cart.value.splice(index, 1)
-  localStorage.setItem('cart', JSON.stringify(cart.value))
 
   toast.add({
     title: 'Removed',
-    description: `${removed.title} removed ❌`,
+    description: `${item.title} removed ❌`,
     color: 'error'
   })
 }
 
-// Increase quantity
-const increaseQty = index => {
+// Increase quantity (simple frontend update now)
+const increaseQty = (index) => {
   cart.value[index].quantity++
-  localStorage.setItem('cart', JSON.stringify(cart.value))
 }
 
 // Decrease quantity
-const decreaseQty = index => {
+const decreaseQty = (index) => {
   if (cart.value[index].quantity > 1) {
     cart.value[index].quantity--
-    localStorage.setItem('cart', JSON.stringify(cart.value))
   }
 }
 
@@ -62,8 +69,8 @@ const proceedToCheckout = () => {
   }
 
   toast.add({
-    title: 'Coming Soon',
-    description: 'Checkout feature coming soon 🚀',
+    title: 'Success',
+    description: 'Checkout coming soon 🚀',
     color: 'success'
   })
 }
