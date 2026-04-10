@@ -10,7 +10,7 @@ export const products = sqliteTable('products', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   title: text('title').notNull(),
   price: integer('price').notNull(),
-  image: text('image'),
+  image: text('image').notNull(),
   description: text('description'),
   category: text('category')
 })

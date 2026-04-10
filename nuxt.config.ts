@@ -28,10 +28,12 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
   nitro: {
-
     cloudflare: { nodeCompat: true }
   },
-  hub: {},
+
+  hub: {
+    db: 'sqlite'
+  },
 
   eslint: { config: { stylistic: true } }
 })

@@ -1,24 +1,31 @@
 <script setup>
 /* eslint-disable */
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useToast } from '#imports'
 
 const toast = useToast()
 
-// 🔥 PRODUCTS FROM DATABASE
-const { data: products } = await useFetch('/api/products')
+// 🔥 Fetch products from API
+const { data, pending, error } = await useFetch('/api/products')
 
-// Cart (still localStorage for now)
+// Ensure products is always an array
+const products = computed(() => data.value || [])
+
+// 🛒 Cart (stored in localStorage)
 const cart = ref([])
 
-if (process.client) {
+onMounted(() => {
   const saved = localStorage.getItem('cart')
-  if (saved) cart.value = JSON.parse(saved)
-}
+  if (saved) {
+    cart.value = JSON.parse(saved)
+  }
+})
 
-// Add to cart
+// ➕ Add to cart
 const addToCart = (product) => {
-  const existing = cart.value.find(item => item.productId === product.id)
+  const existing = cart.value.find(
+    (item) => item.productId === product.id
+  )
 
   if (existing) {
     existing.quantity++
@@ -53,7 +60,7 @@ const addToCart = (product) => {
         Discover amazing products at the best prices
       </p>
       <UButton label="Shop Now" size="lg" to="/products"
-        class="mt-4 hover:scale-105 transition  bg-linear-to-r from-blue-500 to-purple-600 text-white duration-300" />
+        class="mt-4 hover:scale-105 transition bg-linear-to-r from-blue-500 to-purple-600 text-white duration-300" />
     </section>
 
     <!-- 1️⃣ Featured Categories -->
@@ -65,7 +72,7 @@ const addToCart = (product) => {
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <div class="group overflow-hidden rounded-xl">
           <img src="/images/electronics.jpg" alt="Electronics" loading="lazy"
-            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110">
+            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110" />
           <p class="text-center mt-4 text-gray-300 font-semibold group-hover:text-purple-400 transition">
             Electronics
           </p>
@@ -73,7 +80,7 @@ const addToCart = (product) => {
 
         <div class="group overflow-hidden rounded-xl">
           <img src="/images/clothing.jpg" alt="Clothing" loading="lazy"
-            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110">
+            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110" />
           <p class="text-center mt-4 text-gray-300 font-semibold group-hover:text-purple-400 transition">
             Clothing
           </p>
@@ -81,7 +88,7 @@ const addToCart = (product) => {
 
         <div class="group overflow-hidden rounded-xl">
           <img src="/images/shoes.jpg" alt="Shoes" loading="lazy"
-            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110">
+            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110" />
           <p class="text-center mt-4 text-gray-300 font-semibold group-hover:text-purple-400 transition">
             Shoes
           </p>
@@ -89,7 +96,7 @@ const addToCart = (product) => {
 
         <div class="group overflow-hidden rounded-xl">
           <img src="/images/accessories.jpg" alt="Accessories" loading="lazy"
-            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110">
+            class="w-full h-48 object-cover bg-white rounded-xl transition duration-300 group-hover:scale-110" />
           <p class="text-center mt-4 text-gray-300 font-semibold group-hover:text-purple-400 transition">
             Accessories
           </p>
@@ -104,16 +111,29 @@ const addToCart = (product) => {
         Featured Products
       </h2>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <!-- Loading State -->
+      <div v-if="pending" class="text-center text-gray-400">
+        Loading products...
+      </div>
 
-        <div v-for="product in products || []" :key="product.id"
+      <!-- Error State -->
+      <div v-else-if="error" class="text-center text-red-500">
+        Failed to load products.
+      </div>
+
+      <!-- Empty State -->
+      <div v-else-if="products.length === 0" class="text-center text-gray-400">
+        No products available.
+      </div>
+
+      <!-- Products Grid -->
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <div v-for="product in products" :key="product.id"
           class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md group">
-
-          <img :src="product.image || '/images/placeholder.png'"
+          <img :src="product.image || '/images/placeholder.png'" :alt="product.title"
             class="w-full h-48 object-cover group-hover:scale-110 transition" />
 
           <div class="text-center p-4">
-
             <h3 class="font-semibold text-gray-300">
               {{ product.title }}
             </h3>
@@ -123,10 +143,8 @@ const addToCart = (product) => {
             </p>
 
             <UButton label="Add to Cart" size="sm" class="bg-blue-600 text-white mt-2" @click="addToCart(product)" />
-
           </div>
         </div>
-
       </div>
     </section>
   </div>
