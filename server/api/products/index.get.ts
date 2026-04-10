@@ -1,7 +1,9 @@
-import { db } from '../../db'
-import { products } from '../../db/schema'
+// server/api/products/index.get.ts
+import { db } from '~~/server/db' // 'db' کو یہاں سے امپورٹ کریں
+import { products } from '~~/server/db/schema'
 
-export default defineEventHandler(async () => {
-  const result = await db.select().from(products)
-  return result // ✅ Must return an array
+export default eventHandler(async () => {
+  // اب یہاں 'db' استعمال کریں
+  const allProducts = await db.select().from(products).all()
+  return allProducts
 })
