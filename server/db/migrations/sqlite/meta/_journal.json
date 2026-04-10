@@ -8,6 +8,13 @@
       "when": 1775813620993,
       "tag": "0000_nice_husk",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1775816367705,
+      "tag": "0001_steady_jamie_braddock",
+      "breakpoints": true
     }
   ]
 }
