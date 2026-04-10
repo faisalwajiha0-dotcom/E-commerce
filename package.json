@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.2",
     "@nuxt/eslint": "^1.15.2",
     "@nuxt/ui": "^4.5.1",
     "@nuxthub/core": "^0.10.7",
