@@ -1,3 +1,4 @@
+// nuxt.config.ts
 export default defineNuxtConfig({
   modules: [
     '@nuxt/ui',
@@ -7,32 +8,21 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  app: {
-    head: {
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css'
-        }
-      ]
-    }
-  },
-
   css: ['~/assets/css/main.css'],
-
-  ui: {
-    content: true,
-    experimental: { componentDetection: true }
-  },
 
   compatibilityDate: '2025-07-15',
 
   nitro: {
-    cloudflare: { nodeCompat: true }
+    preset: 'cloudflare', // Required for D1
+    cloudflare: {
+      nodeCompat: true
+    }
   },
 
   hub: {
-    db: 'sqlite'
+    database: {
+      driver: 'd1' // Use Cloudflare D1
+    }
   },
 
   eslint: { config: { stylistic: true } }
