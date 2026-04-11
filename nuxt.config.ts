@@ -1,10 +1,6 @@
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: [
-    '@nuxt/ui',
-    '@nuxt/eslint',
-    '@nuxthub/core'
-  ],
+  modules: ['@nuxt/ui', '@nuxt/eslint', '@nuxthub/core'],
 
   devtools: { enabled: true },
 
@@ -13,7 +9,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
 
   nitro: {
-    preset: 'cloudflare', // Required for D1
+    preset: 'cloudflare',
     cloudflare: {
       nodeCompat: true
     }
@@ -21,9 +17,7 @@ export default defineNuxtConfig({
 
   hub: {
     database: {
-      driver: 'd1' // Use Cloudflare D1
+      driver: 'd1' // Use 'sqlite' for local development if needed
     }
-  },
-
-  eslint: { config: { stylistic: true } }
+  }
 })
