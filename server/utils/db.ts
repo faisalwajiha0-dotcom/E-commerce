@@ -1,16 +1,15 @@
-import { drizzle } from 'drizzle-orm/libsql'
-import { createClient } from '@libsql/client'
+import { createClient } from '@libsql/client';
+import { drizzle } from 'drizzle-orm/libsql';
 
-const url = process.env.DATABASE_URL
-const authToken = process.env.DATABASE_AUTH_TOKEN
-
-if (!url) {
-  throw new Error('DATABASE_URL missing')
-}
+const config = useRuntimeConfig();
 
 const client = createClient({
-  url,
-  authToken
-})
+  url: config.databaseUrl,
+  authToken: config.databaseAuthToken,
+});
 
-export const db = drizzle(client)
+export const db = drizzle(client);
+
+export const useDb = () => {
+  return db;
+}

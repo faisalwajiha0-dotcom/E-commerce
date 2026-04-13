@@ -8,8 +8,11 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
-  runtimeConfig: {
-    databaseUrl: process.env.DATABASE_URL,
+runtimeConfig: {
+    // These default values will be overridden by NUXT_DATABASE_URL 
+    // and NUXT_DATABASE_AUTH_TOKEN from your .env file
+    databaseUrl: '', 
+    databaseAuthToken: '',
   },
 
   nitro: {
