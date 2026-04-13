@@ -1,23 +1,20 @@
-// nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxt/eslint', '@nuxthub/core'],
+  modules: [
+    '@nuxt/ui',
+    '@nuxt/eslint',
+  ],
 
   devtools: { enabled: true },
 
   css: ['~/assets/css/main.css'],
 
-  compatibilityDate: '2025-07-15',
-
-  nitro: {
-    preset: 'cloudflare',
-    cloudflare: {
-      nodeCompat: true
-    }
+  runtimeConfig: {
+    databaseUrl: process.env.DATABASE_URL,
   },
 
-  hub: {
-    database: {
-      driver: 'd1' // Use 'sqlite' for local development if needed
+  nitro: {
+    experimental: {
+      wasm: true
     }
   }
 })

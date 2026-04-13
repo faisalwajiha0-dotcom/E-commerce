@@ -115,12 +115,20 @@ const filteredProducts = computed(() => {
 
         <!-- Product Info -->
         <div class="p-4 text-center">
-          <h3 class="text-gray-300 font-semibold mb-2">
-            {{ product.title }}
+          <h3>
+            {{ product.title || 'No title' }}
           </h3>
 
-          <p class="text-blue-400 font-bold mb-3">
-            ${{ product.price }}
+          <p>
+            ${{ product.price || 0 }}
+          </p>
+
+          <p v-if="product.description">
+            {{ product.description }}
+          </p>
+
+          <p v-if="product.stock !== undefined">
+            Stock: {{ product.stock }}
           </p>
 
           <NuxtLink :to="`/products/${product.id}`"

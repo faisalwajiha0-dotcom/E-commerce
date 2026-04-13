@@ -1,11 +1,13 @@
-import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
+import { sqliteTable, integer, text, real } from 'drizzle-orm/sqlite-core'
 
-// ✅ Products Table
 export const products = sqliteTable('products', {
   id: integer('id').primaryKey({ autoIncrement: true }),
   title: text('title').notNull(),
-  price: integer('price').notNull(),
+  price: real('price').notNull(),
+  category: text('category').notNull(),
   image: text('image').notNull(),
   description: text('description'),
-  category: text('category')
+  stock: integer('stock').default(0),
+  featured: integer('featured', { mode: 'boolean' }).default(false),
+  special: integer('special', { mode: 'boolean' }).default(false)
 })

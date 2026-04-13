@@ -1,11 +1,10 @@
-import { getRouterParam, createError } from 'h3'
+import { db } from '~~/server/utils/db'
+import { products } from '~~/server/db/schema/products'
 import { eq } from 'drizzle-orm'
-import { products } from '~/server/db/schema'
-import { getDB } from '~/server/db/orm/drizzle'
+import { getRouterParam, createError } from 'h3'
 
-export default defineEventHandler(async event => {
+export default defineEventHandler(async (event) => {
   const id = Number(getRouterParam(event, 'id'))
-  const db = getDB()
 
   if (!id) {
     throw createError({
