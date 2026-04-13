@@ -4,7 +4,9 @@ export default defineConfig({
   schema: './server/db/schema',
   out: './server/db/migrations',
   dialect: 'sqlite',
+  driver: 'turso',
   dbCredentials: {
-    url: './server/db/dev.db'
+    url: process.env.NUXT_DATABASE_URL || '',
+    authToken: process.env.NUXT_DATABASE_AUTH_TOKEN || '',
   }
 })
