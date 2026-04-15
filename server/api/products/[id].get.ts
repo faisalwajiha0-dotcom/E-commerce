@@ -3,7 +3,7 @@ import { products } from '~~/server/db/schema/products'
 import { eq } from 'drizzle-orm'
 import { getRouterParam, createError } from 'h3'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const id = Number(getRouterParam(event, 'id'))
 
   if (!id) {

@@ -1,7 +1,11 @@
 // @ts-check
 import withNuxt from './.nuxt/eslint.config.mjs'
+import stylistic from '@stylistic/eslint-plugin'
 
 export default withNuxt({
+  plugins: {
+    '@stylistic': stylistic,
+  },
   rules: {
     'vue/max-attributes-per-line': ['warn', { singleline: 5 }],
     '@stylistic/comma-dangle': ['warn', 'only-multiline'],
