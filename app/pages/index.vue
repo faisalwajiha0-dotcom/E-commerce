@@ -9,7 +9,14 @@ const toast = useToast()
 const { data, pending, error } = await useFetch('/api/products')
 
 // Ensure products is always an array
-const products = computed(() => data.value || [])
+const products = computed(() => {
+  return Array.isArray(data.value) ? data.value : []
+})
+
+// 🔥 sirf featured products
+const featuredProducts = computed(() => {
+  return products.value.filter(p => p.featured)
+})
 
 // 🛒 Cart (stored in localStorage)
 const cart = ref([])
@@ -128,7 +135,7 @@ const addToCart = (product) => {
 
       <!-- Products Grid -->
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        <div v-for="product in products" :key="product.id"
+        <div v-for="product in featuredProducts" :key="product.id"
           class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md group">
           <img :src="product.image || '/images/placeholder.png'" :alt="product.title"
             class="w-full h-48 object-cover group-hover:scale-110 transition" />

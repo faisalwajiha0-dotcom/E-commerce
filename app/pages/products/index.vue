@@ -1,20 +1,14 @@
 <script setup>
-/* eslint-disable */
 import { ref, computed } from 'vue'
 
-// 🔥 Fetch products from API
+// 🔥 Fetch products
 const { data, pending, error } = await useFetch('/api/products')
 
-// ✅ Ensure products is always an array
+// ✅ Safe products
 const products = computed(() => {
-  if (Array.isArray(data.value)) {
-    return data.value
-  }
-  // If API returns { data: [...] }
-  if (data.value && Array.isArray(data.value.data)) {
-    return data.value.data
-  }
-  return []
+  return Array.isArray(data.value)
+    ? data.value
+    : data.value?.data || []
 })
 
 // 🔍 Filters
@@ -22,121 +16,85 @@ const searchQuery = ref('')
 const selectedCategory = ref('All')
 const sortOption = ref('default')
 
-// 📂 Dynamic categories from products
+// 📂 Categories
 const categories = computed(() => {
-  const unique = new Set(
-    products.value
-      .map((p) => p.category)
-      .filter(Boolean)
-  )
-  return ['All', ...unique]
+  const cats = products.value.map(p => p.category).filter(Boolean)
+  return ['All', ...new Set(cats)]
 })
 
-// 🔄 Filtered & Sorted Products
+// 🔄 Filtered products
 const filteredProducts = computed(() => {
-  let filtered = [...products.value]
+  let list = [...products.value]
 
-  // Filter by category
   if (selectedCategory.value !== 'All') {
-    filtered = filtered.filter(
-      (p) => p.category === selectedCategory.value
-    )
+    list = list.filter(p => p.category === selectedCategory.value)
   }
 
-  // Search by title
   if (searchQuery.value) {
-    filtered = filtered.filter((p) =>
-      p.title?.toLowerCase().includes(
-        searchQuery.value.toLowerCase()
-      )
+    list = list.filter(p =>
+      p.title?.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
   }
 
-  // Sorting
   if (sortOption.value === 'low') {
-    filtered.sort((a, b) => Number(a.price) - Number(b.price))
-  } else if (sortOption.value === 'high') {
-    filtered.sort((a, b) => Number(b.price) - Number(a.price))
+    list.sort((a, b) => a.price - b.price)
   }
 
-  return filtered
+  if (sortOption.value === 'high') {
+    list.sort((a, b) => b.price - a.price)
+  }
+
+  return list
 })
 </script>
 
 <template>
   <div class="px-4 py-10 max-w-7xl mx-auto">
-    <!-- Page Title -->
-    <h1 class="text-5xl font-bold mb-10 text-center bg-blue-500 bg-clip-text text-transparent">
+
+    <h1 class="text-4xl font-bold text-center mb-8 text-blue-500">
       Products
     </h1>
 
-    <!-- 🔍 Filters -->
+    <!-- Filters -->
     <div class="flex flex-col sm:flex-row gap-4 mb-8">
-      <!-- Search -->
-      <input v-model="searchQuery" type="text" placeholder="Search products..."
-        class="w-full sm:w-1/3 px-4 py-2 rounded-xl border" />
 
-      <!-- Category Filter -->
-      <select v-model="selectedCategory" class="px-4 py-2 rounded-xl border">
-        <option v-for="cat in categories" :key="cat" :value="cat">
-          {{ cat }}
-        </option>
+      <input v-model="searchQuery" placeholder="Search..." class="border px-4 py-2 rounded-lg w-full sm:w-1/3">
+
+      <select v-model="selectedCategory" class="border px-4 py-2 rounded-lg">
+        <option v-for="c in categories" :key="c">{{ c }}</option>
       </select>
 
-      <!-- Sorting -->
-      <select v-model="sortOption" class="px-4 py-2 rounded-xl border">
-        <option value="default">Sort By</option>
-        <option value="low">Price: Low to High</option>
-        <option value="high">Price: High to Low</option>
+      <select v-model="sortOption" class="border px-4 py-2 rounded-lg">
+        <option value="default">Sort</option>
+        <option value="low">Low → High</option>
+        <option value="high">High → Low</option>
       </select>
+
     </div>
 
-    <!-- ⏳ Loading State -->
-    <div v-if="pending" class="text-center text-gray-400">
-      Loading products...
-    </div>
+    <!-- States -->
+    <div v-if="pending" class="text-center">Loading...</div>
+    <div v-else-if="error" class="text-red-500 text-center">Error loading products</div>
 
-    <!-- ❌ Error State -->
-    <div v-else-if="error" class="text-center text-red-500">
-      Failed to load products. Please try again.
-    </div>
+    <!-- Products -->
+    <div v-else class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-    <!-- 📭 Empty State -->
-    <div v-else-if="filteredProducts.length === 0" class="text-center text-gray-400">
-      No products available.
-    </div>
+      <div v-for="p in filteredProducts" :key="p.id" class="bg-[#0f172a] p-4 rounded-xl">
 
-    <!-- 🛍️ Products Grid -->
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      <div v-for="product in filteredProducts" :key="product.id"
-        class="bg-[#0f172a] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition">
-        <!-- Product Image -->
-        <img :src="product.image || '/images/placeholder.png'" :alt="product.title" class="w-full h-48 object-cover" />
+        <img :src="p.image || '/images/placeholder.png'" class="h-40 w-full object-cover rounded">
 
-        <!-- Product Info -->
-        <div class="p-4 text-center">
-          <h3>
-            {{ product.title || 'No title' }}
-          </h3>
+        <h3 class="text-white mt-2">{{ p.title }}</h3>
+        <p class="text-blue-400">${{ p.price }}</p>
 
-          <p>
-            ${{ product.price || 0 }}
-          </p>
+        <NuxtLink :to="`/products/${p.id}`">
+          <button class="mt-2 bg-blue-600 text-white px-3 py-1 rounded">
+            View Detail
+          </button>
+        </NuxtLink>
 
-          <p v-if="product.description">
-            {{ product.description }}
-          </p>
-
-          <p v-if="product.stock !== undefined">
-            Stock: {{ product.stock }}
-          </p>
-
-          <NuxtLink :to="`/products/${product.id}`"
-            class="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">
-            View Details
-          </NuxtLink>
-        </div>
       </div>
+
     </div>
+
   </div>
 </template>
